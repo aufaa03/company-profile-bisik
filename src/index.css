@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    /* Menerapkan 'Inter' ke seluruh halaman */
+    font-family: "Inter", sans-serif;
+  }
+  :root {
+    /* Warna untuk Light Mode (Default) */
+    --color-primary: #0D47A1;
+    --color-secondary: #00897B; 
+    --color-dot-grid: #94A3B8; /* Warna dot grid */
+  }
+  html.dark {
+    /* Warna untuk Dark Mode */
+    --color-primary: #3B82F6;   /* Biru yang lebih cerah */
+    --color-secondary: #14B8A6; /* Toska yang lebih cerah */
+    --color-dot-grid: #475569; /* Warna dot grid (slate-600) */
+  }
+  .swiper-wrapper {
+  align-items: stretch !important;
+}
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: var(--color-primary) !important; /* Pakai warna primary kita */
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    opacity: 1;
+  }
+}
