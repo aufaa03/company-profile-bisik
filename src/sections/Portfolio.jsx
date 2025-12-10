@@ -1,81 +1,65 @@
-// src/sections/Portfolio.jsx
-
+import React from 'react';
 import { appData } from '../data/appData';
-import SectionHeading from '../components/SectionHeading';
+import { motion } from 'framer-motion';
+import { ExternalLink } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
-import { motion as Motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+const Portfolio = () => {
+  const { portfolio, ui } = appData;
+  const { language } = useLanguage();
 
-function Portfolio() {
-  const projects = appData.portfolio;
-    const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once: true, // Animasi hanya berjalan sekali
-    amount: 0.1  // Trigger saat 10% elemen terlihat
-  });
-
-  // 3. DEFINISIKAN VARIAN ANIMASI
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 50 }, // Mulai dari: transparan, 50px di bawah
-    visible: { opacity: 1, y: 0 },  // Selesai di: terlihat, posisi normal (y: 0)
-  };
   return (
-    <Motion.section 
-      id="portfolio" 
-      className="py-20 px-6 bg-light dark:bg-dark relative z-10 overflow-hidden" // Pastikan 'relative'
-      ref={ref}
-      variants={sectionVariants}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      
-      {/* 1. INI DIA DOT GRID PATTERN KITA */}
-      <div 
-        className="absolute inset-0 z-0"
-        style={{
-          // Ini adalah trik CSS untuk buat dot grid
-         backgroundImage: 'radial-gradient(circle at 1px 1px, var(--color-dot-grid) 1px, transparent 0)',
-            backgroundSize: '20px 20px',
-          opacity: 0.5, // Kita buat SANGAT halus
-        }}
-        aria-hidden="true"
-      ></div>
+    <section id="portfolio" className="py-24 bg-background relative">
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
+        >
+          <div>
+            <h2 className="text-3xl md:text-5xl font-heading font-bold text-text-main dark:text-white mb-4">
+              {ui.common.work[language]} <span className="text-gradient">{ui.common.contribution[language]}</span>
+            </h2>
+            <p className="text-text-muted max-w-xl">
+              {ui.common.trackRecord[language]}
+            </p>
+          </div>
+          <a href="#" className="text-primary hover:text-primaryDark font-medium flex items-center transition-colors">
+            {ui.common.seeAll[language]} <ExternalLink size={16} className="ml-2" />
+          </a>
+        </motion.div>
 
-
-      {/* 2. KONTEN KITA (HARUS relative z-10) */}
-      <div className="container mx-auto relative z-10">
-        <SectionHeading
-          title="Portofolio Kami"
-          subtitle="Beberapa proyek dan kemitraan yang telah kami jalankan."
-        />
-
-        {/* ... (sisa kode .map kartu portofolio SAMA PERSIS) ... */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <div
+          {portfolio.map((item, index) => (
+            <motion.div
               key={index}
-              // Kita buat kartu ini semi-transparan juga (frost-glass)
-              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative overflow-hidden rounded-3xl bg-surface border border-black/10 dark:border-white/5 shadow-lg dark:shadow-none aspect-video flex flex-col justify-end p-8 hover:shadow-xl transition-all duration-300"
             >
-              <div className="p-8">
-                <p className="text-secondary dark:text-secondary font-semibold text-sm mb-2 uppercase">
-                  {project.category}
-                </p>
-                <h3 className="text-2xl font-bold dark:text-white text-dark mb-4 font-heading">
-                  {project.title}
+              {/* Placeholder Gradient Background since no images provided */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${index % 2 === 0 ? 'from-primary/10 to-accent/10' : 'from-secondary/10 to-primary/10'} group-hover:scale-105 transition-transform duration-700`} />
+              
+              <div className="relative z-10">
+                <span className="inline-block px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-medium text-text-main dark:text-white mb-3 border border-black/10 dark:border-white/10">
+                  {item.category[language]}
+                </span>
+                <h3 className="text-2xl font-heading font-bold text-text-main dark:text-white mb-2">
+                  {item.title[language]}
                 </h3>
-                <p className="text-gray-700 dark:text-gray-400">
-                  {project.description}
+                <p className="text-text-muted dark:text-gray-300 text-sm max-w-md">
+                  {item.description[language]}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-    </Motion.section>
+    </section>
   );
-}
+};
 
 export default Portfolio;

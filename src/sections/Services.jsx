@@ -1,94 +1,70 @@
-// src/sections/Services.jsx
-
+import React from 'react';
 import { appData } from '../data/appData';
-import SectionHeading from '../components/SectionHeading';
+import { motion } from 'framer-motion';
+import { Code, Layout, Users, BookOpen, ArrowUpRight } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
-import { motion as Motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+const Services = () => {
+  const { services, ui } = appData;
+  const { language } = useLanguage();
 
-function Services() {
-  const services = appData.services;
-    const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once: true, // Animasi hanya berjalan sekali
-    amount: 0.1  // Trigger saat 10% elemen terlihat
-  });
-
-  // 3. DEFINISIKAN VARIAN ANIMASI
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 50 }, // Mulai dari: transparan, 50px di bawah
-    visible: { opacity: 1, y: 0 },  // Selesai di: terlihat, posisi normal (y: 0)
+  const getIcon = (title) => {
+    if (title.includes('Website')) return <Layout size={32} />;
+    if (title.includes('Sistem') || title.includes('System')) return <Code size={32} />;
+    if (title.includes('Workshop')) return <Users size={32} />;
+    if (title.includes('TEFA')) return <BookOpen size={32} />;
+    return <Code size={32} />;
   };
+
   return (
-    <Motion.section 
-      id="services" 
-      // 1. TAMBAHKAN 'relative' DI SINI
-      className="py-20 px-6 bg-white dark:bg-gray-900 relative z-10 overflow-hidden" 
-      ref={ref}
-      variants={sectionVariants}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      
-      {/* 2. INI DIA "BLOB" KITA */}
-      {/* Ini adalah SVG besar yang kita posisikan di background */}
-      <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0" 
-        aria-hidden="true"
-      >
-        <svg 
-          width="1360" 
-          height="578" 
-          viewBox="0 0 1360 578" 
-          xmlns="http://www.w3.org/2000/svg"
-          className="opacity-20 md:opacity-10" // Opacity halus
+    <section id="services" className="py-24 bg-background relative overflow-hidden">
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
         >
-          <defs>
-            <linearGradient id="blob-gradient" x1="50%" y1="0%" x2="50%" y2="100%">
-              {/* Ini pakai warna kustom 'primary' & 'secondary' kita */}
-              <stop stopColor="var(--color-primary, #0D47A1)" offset="0%" />
-              <stop stopColor="var(--color-secondary, #00897B)" offset="100%" />
-            </linearGradient>
-          </defs>
-          <path 
-            fill="url(#blob-gradient)" 
-            d="M361.325 110.421c-46.12 40.24-91.37 80.14-134.8 120.04-43.43 39.9-84.4 79.74-121.78 120.24-37.38 40.5-71.16 81.64-97.77 124.64C-19.62 518.34-39.7 561 24.33 561H1360V0H24.33C116.33 0 212.33 110.421 361.325 110.421z" 
-          />
-        </svg>
-      </div>
-      {/* Catatan: Kita perlu definisikan warna di CSS agar terbaca SVG */}
+          <h2 className="text-3xl md:text-5xl font-heading font-bold text-text-main dark:text-white mb-4">
+            {ui.common.services[language]} <span className="text-gradient">{ui.common.featured[language]}</span>
+          </h2>
+          <p className="text-text-muted max-w-2xl mx-auto">
+            {ui.common.comprehensive[language]}
+          </p>
+        </motion.div>
 
-
-      {/* 3. KONTEN KITA BUAT 'relative' agar di atas BLOB */}
-      <div className="container mx-auto relative z-10">
-        <SectionHeading 
-          title="Layanan Kami"
-          subtitle="Fokus kami adalah menyediakan solusi digital yang efisien dan inovatif."
-        />
-
-        {/* ... (sisa kode .map kartu layanan SAMA PERSIS, tidak usah diubah) ... */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
-            <div 
+            <motion.div
               key={index}
-              // Kita buat kartu ini semi-transparan agar blob di belakangnya
-              // samar-samar terlihat. Ini efek "frost-glass"
-              className="bg-white/80 backdrop-blur-sm dark:bg-gray-800/80 p-8 rounded-lg shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className={`group relative p-8 rounded-3xl border border-black/5 dark:border-white/5 bg-surface hover:bg-surfaceHighlight transition-all duration-300 ${
+                index === 0 || index === 3 ? 'md:col-span-2' : 'md:col-span-1'
+              }`}
             >
-              <h3 className="text-2xl font-bold text-dark dark:text-secondary mb-4 font-heading">
-                {service.title}
+              <div className="absolute top-8 right-8 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpRight size={24} />
+              </div>
+              
+              <div className="mb-6 p-4 rounded-2xl bg-primary/10 w-fit text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                {getIcon(service.title[language])}
+              </div>
+              
+              <h3 className="text-2xl font-heading font-bold text-text-main dark:text-white mb-3">
+                {service.title[language]}
               </h3>
-              <p className="text-gray-700 dark:text-gray-300">
-                {service.description}
+              <p className="text-text-muted leading-relaxed">
+                {service.description[language]}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-    </Motion.section>
+    </section>
   );
-}
+};
 
 export default Services;

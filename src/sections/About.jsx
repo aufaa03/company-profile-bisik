@@ -1,84 +1,66 @@
-// src/sections/About.jsx
-
+import React from 'react';
 import { appData } from '../data/appData';
-// Kita tidak pakai SectionHeading di sini karena kita mau layout custom
-// import SectionHeading from '../components/SectionHeading'; 
+import { motion } from 'framer-motion';
+import { CheckCircle2 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import aboutVisual from '../assets/about-visual.png';
 
-// 1. IMPOR DARI FRAMER-MOTION DAN REACT
-import { motion as Motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import fotoTim from '../assets/ilustrasi_kerja-tim.webp';
-
-function About() {
-  const { description, values } = appData.about;
-
-  // 2. SETUP REF DAN HOOK useInView (Sama seperti sebelumnya)
-  const ref = useRef(null);
-  const isInView = useInView(ref, { 
-    once: true,
-    amount: 0.1
-  });
-
-  // 3. DEFINISIKAN VARIAN ANIMASI (Sama seperti sebelumnya)
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 },
-  };
+const About = () => {
+  const { about, ui } = appData;
+  const { language } = useLanguage();
 
   return (
-    <Motion.section 
-      id="about" 
-      className="py-20 px-6 bg-light relative z-10 overflow-hidden dark:bg-dark" // Pakai warna 'light'
-      ref={ref}
-      variants={sectionVariants}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <div className="container mx-auto">
-        {/* Ini dia layout 2 kolom kita */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          
-          {/* == KOLOM KIRI (VISUAL/GAMBAR) == */}
-          <div className="w-full h-80 md:h-full bg-gray-300 rounded-lg shadow-xl">
-              <img src={fotoTim} alt="Tim CV BISIK" 
-                   className="w-full h-full object-cover rounded-lg shadow-xl" />
-            {/* Nanti kamu bisa ganti div ini dengan:
-            */}
-          </div>
-
-          {/* == KOLOM KANAN (TEKS & POIN) == */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-dark dark:text-white mb-4 font-heading">
-              Tentang Kami
+    <section id="about" className="py-24 bg-surface relative overflow-hidden">
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-5xl font-heading font-bold text-text-main dark:text-white mb-6">
+              {ui.nav.about[language]} <span className="text-gradient">{ui.common.team[language] === 'Team' ? 'Us' : 'Kami'}</span>
             </h2>
-            <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
-              {description}
+            <p className="text-text-muted text-lg mb-8 leading-relaxed">
+              {about.description[language]}
             </p>
-
-            {/* Poin Nilai/Keunggulan (Kita buat 2x2 grid di sini) */}
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {values.map((value, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                >
-                  <h3 className="text-xl font-semibold text-primary dark:text-secondary mb-3 font-heading">
-                    {value.title}
-                  </h3>
-                  <p className="text-gray-700 dark:text-gray-300 text-sm"> {/* Teks kita kecilkan */}
-                    {value.description}
-                  </p>
+              {about.values.map((value, index) => (
+                <div key={index} className="flex gap-4">
+                  <div className="mt-1 text-primary">
+                    <CheckCircle2 size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-text-main dark:text-white font-bold mb-2">{value.title[language]}</h4>
+                    <p className="text-sm text-text-muted leading-relaxed">
+                      {value.description[language]}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-3xl blur-2xl" />
+            <div className="relative rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 bg-background/50 backdrop-blur-sm">
+              <img 
+                src={aboutVisual} 
+                alt="Digital Innovation" 
+                className="w-full h-full object-cover rounded-3xl hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+          </motion.div>
         </div>
       </div>
-    </Motion.section>
+    </section>
   );
-}
+};
 
 export default About;

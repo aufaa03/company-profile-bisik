@@ -9,9 +9,9 @@ const ThemeContext = createContext();
 // Ini adalah komponen yang akan "membungkus" aplikasi kita
 export function ThemeProvider({ children }) {
   // 3. Buat state untuk tema
-  // Kita cek 'localStorage' dulu, kalau tidak ada, default-nya 'light'
+  // Kita cek 'localStorage' dulu, kalau tidak ada, default-nya 'dark' (sesuai request user)
   const [theme, setTheme] = useState(
-    () => localStorage.getItem('theme') || 'light'
+    () => localStorage.getItem('theme') || 'dark'
   );
 
   // 4. Buat 'useEffect' untuk MENGUBAH <html>

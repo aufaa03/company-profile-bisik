@@ -1,35 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  body {
-    /* Menerapkan 'Inter' ke seluruh halaman */
-    font-family: "Inter", sans-serif;
-  }
   :root {
-    /* Warna untuk Light Mode (Default) */
-    --color-primary: #0D47A1;
-    --color-secondary: #00897B; 
-    --color-dot-grid: #94A3B8; /* Warna dot grid */
+    /* Light Mode Variables */
+    --background: 249 250 251; /* Gray 50 */
+    --surface: 255 255 255;    /* White */
+    --surface-highlight: 229 231 235; /* Gray 200 - Darker for better contrast */
+    --text-main: 17 24 39;     /* Gray 900 */
+    --text-muted: 75 85 99;    /* Gray 600 - Darker for readability */
+    --primary: 79 70 229;      /* Indigo 600 */
+    --primary-dark: 67 56 202; /* Indigo 700 */
+    --secondary: 16 185 129;   /* Emerald 500 */
+    --accent: 139 92 246;      /* Violet 500 */
   }
-  html.dark {
-    /* Warna untuk Dark Mode */
-    --color-primary: #3B82F6;   /* Biru yang lebih cerah */
-    --color-secondary: #14B8A6; /* Toska yang lebih cerah */
-    --color-dot-grid: #475569; /* Warna dot grid (slate-600) */
+
+  .dark {
+    /* Dark Mode Variables */
+    --background: 3 7 18;      /* Gray 950 */
+    --surface: 17 24 39;       /* Gray 900 */
+    --surface-highlight: 31 41 55; /* Gray 800 */
+    --text-main: 249 250 251;  /* Gray 50 */
+    --text-muted: 156 163 175; /* Gray 400 */
+    --primary: 99 102 241;     /* Indigo 500 */
+    --primary-dark: 67 56 202; /* Indigo 700 */
+    --secondary: 16 185 129;   /* Emerald 500 */
+    --accent: 139 92 246;      /* Violet 500 */
   }
-  .swiper-wrapper {
-  align-items: stretch !important;
+
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-text-main font-sans antialiased selection:bg-primary selection:text-white transition-colors duration-300;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold tracking-tight;
+  }
 }
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: var(--color-primary) !important; /* Pakai warna primary kita */
-    opacity: 0.5;
-    transition: opacity 0.3s;
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-surface/50 backdrop-blur-md border border-white/10 shadow-xl;
   }
-  .swiper-button-next:hover,
-  .swiper-button-prev:hover {
-    opacity: 1;
+  
+  .glass-nav {
+    @apply bg-background/80 backdrop-blur-lg border-b border-white/5;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
   }
 }
+
+/* Swiper Customization */
+.swiper-pagination-bullet {
+  @apply bg-text-muted opacity-50 !important;
+}
+.swiper-pagination-bullet-active {
+  @apply bg-primary opacity-100 !important;
+}
+

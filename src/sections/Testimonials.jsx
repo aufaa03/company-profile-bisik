@@ -1,107 +1,46 @@
+import React from 'react';
+import { appData } from '../data/appData';
+import { motion } from 'framer-motion';
+import { Quote } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
-
-import { appData } from "../data/appData";
-import SectionHeading from "../components/SectionHeading";
-
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-
-
-import { motion as Motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
-
-function Testimonials() {
-  const testimonials = appData.testimonials;
-
-  
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 },
-  };
+const Testimonials = () => {
+  const { testimonials, ui } = appData;
+  const { language } = useLanguage();
 
   return (
-    <Motion.section
-      id="testimonials"
-      className="py-20 px-6 bg-light dark:bg-gray-900 relative z-10 overflow-hidden" 
-      ref={ref}
-      variants={sectionVariants}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <div className="container mx-auto">
-        <SectionHeading
-          title="Apa Kata Klien Kami"
-          subtitle="Testimoni dari mitra dan klien yang telah bekerja sama dengan kami."
-        />
-
-        {/* 4. INI DIA SLIDER-NYA */}
-        <Swiper
-          
-          modules={[Navigation, Pagination, Autoplay]}
-          
-          slidesPerView={1} 
-          spaceBetween={30}
-          loop={true}
-          autoplay={{
-            delay: 5000, 
-            disableOnInteraction: false,
-          }}
-          pagination={{
-            clickable: true, 
-          }}
-          navigation={true} 
-          
-          breakpoints={{
-            768: {
-              slidesPerView: 2, 
-              spaceBetween: 40,
-            },
-          }}
-          
-          className="w-full"
-        >
-          {testimonials.map((testimonial, index) => (
-            
-            
-            <SwiperSlide key={index} className="pb-12 pt-4 px-4"> 
-              
-              {/* 2. PASTIKAN 'h-full' DAN 'flex' ADA DI KARTU INI */}
-              <div className="bg-white dark:bg-gray-800/80 h-full p-8 rounded-lg shadow-lg text-center flex flex-col">
-                
-                {/* 3. PASTIKAN 'flex-grow' ADA DI WRAPPER KUTIPAN */}
-                <div className="flex-grow">
-                  <p className="text-gray-700 dark:text-gray-300 italic text-lg mb-6">
-                    "{testimonial.quote}"
-                  </p>
-                </div>
-                
-                {/* 4. PASTIKAN INFO PENULIS ADA DI DIV-NYA SENDIRI */}
-                <div>
-                  <h4 className="font-bold text-primary dark:text-white font-heading text-xl">
-                    {testimonial.name}
-                  </h4>
-                  <p className="text-secondary dark:text-gray-400 font-medium">
-                    {testimonial.title}
-                  </p>
-                </div>
-
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+    <section id="testimonials" className="py-24 bg-background overflow-hidden">
+      <div className="container mx-auto px-6 mb-16 text-center">
+        <h2 className="text-3xl md:text-5xl font-heading font-bold text-text-main dark:text-white mb-4">
+          {ui.common.whatTheySay[language]} <span className="text-gradient">{ui.common.theySay[language]}</span>
+        </h2>
       </div>
-    </Motion.section>
+
+      <div className="relative w-full">
+        {/* Gradients for scroll indication */}
+        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        
+        <div className="flex gap-6 overflow-x-auto px-6 pb-8 snap-x snap-mandatory scrollbar-hide">
+          {testimonials.map((item, index) => (
+            <div
+              key={index}
+              className="flex-shrink-0 snap-center w-[400px] md:w-[500px] p-8 rounded-2xl bg-surface border border-black/10 dark:border-white/5 shadow-lg dark:shadow-none whitespace-normal hover:shadow-xl transition-all duration-300"
+            >
+              <Quote className="text-primary mb-4 opacity-50" size={32} />
+              <p className="text-lg text-text-muted mb-6 leading-relaxed italic">
+                "{item.quote[language]}"
+              </p>
+              <div>
+                <h4 className="text-text-main dark:text-white font-bold text-lg">{item.name}</h4>
+                <p className="text-primary text-sm">{item.title[language] || item.title}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
-}
+};
 
 export default Testimonials;
