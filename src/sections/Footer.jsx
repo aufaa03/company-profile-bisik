@@ -67,10 +67,24 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h4 className="text-text-main font-bold mb-6">{ui.footer.contact[language]}</h4>
-            <ul className="space-y-4 text-text-muted">
+            <ul className="space-y-4 text-text-muted mb-6">
               <li>{contact.email}</li>
               <li>{contact.address}</li>
             </ul>
+            {/* Maps */}
+            <div className="rounded-lg overflow-hidden border border-white/10 h-48 w-full">
+              <iframe
+                title="Location"
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                scrolling="no"
+                marginHeight="0"
+                marginWidth="0"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.518199002454!2d109.32356897356777!3d-7.065753569246154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6fe9ff0110e325%3A0x949f02e65d70fa80!2sCV.%20BINA%20SARANA%20INSAN%20KAMIL!5e0!3m2!1sen!2sus!4v1765423987220!5m2!1sen!2sus"
+                className="w-full h-full grayscale hover:grayscale-0 transition-all duration-300"
+              ></iframe>
+            </div>
           </div>
         </div>
 
