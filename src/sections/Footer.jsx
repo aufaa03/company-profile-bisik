@@ -3,7 +3,7 @@ import { appData } from '../data/appData';
 import { Instagram, Linkedin, Facebook, Twitter } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
-import logoImg from '../assets/logo.png';
+import logoImg from '../assets/logo-bisik.png';
 
 const Footer = () => {
   const { general, contact, ui } = appData;
@@ -28,9 +28,9 @@ const Footer = () => {
             </p>
             <div className="flex gap-4">
               {[Instagram, Linkedin, Facebook, Twitter].map((Icon, i) => (
-                <a 
-                  key={i} 
-                  href="#" 
+                <a
+                  key={i}
+                  href="#"
                   className="w-10 h-10 rounded-full bg-surface border border-black/10 dark:border-white/10 flex items-center justify-center text-text-muted hover:text-white hover:bg-primary hover:border-primary transition-all"
                 >
                   <Icon size={18} />

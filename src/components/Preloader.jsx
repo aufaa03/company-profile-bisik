@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { appData } from '../data/appData';
-import logoImg from '../assets/logo.png';
+import logoImg from '../assets/logo-bisik.png';
 
 const Preloader = () => {
     return (

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 
-import logoImg from '../assets/logo.png';
+import logoImg from '../assets/logo-bisik.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
