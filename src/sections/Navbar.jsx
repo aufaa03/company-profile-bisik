@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Menu, X, ChevronRight, Globe, Moon, Sun } from 'lucide-react';
 import { appData } from '../data/appData';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -22,6 +23,14 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [isOpen]);
+
   const navLinks = [
     { name: ui.nav.home[language], href: '#hero' },
     { name: ui.nav.about[language], href: '#about' },
@@ -33,9 +42,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'glass-nav py-4' : 'bg-transparent py-6'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass-nav py-4' : 'bg-transparent py-6'
+        }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
@@ -58,7 +66,7 @@ const Navbar = () => {
               {link.name}
             </a>
           ))}
-          
+
           <div className="flex items-center gap-3">
             {/* Language Toggle */}
             <button
@@ -96,9 +104,9 @@ const Navbar = () => {
           >
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-          
+
           <button
-            className="text-text-main dark:text-white p-2"
+            className="text-text-main dark:text-white p-2 z-50 relative"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -106,30 +114,59 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-surface border-b border-white/10 overflow-hidden"
-          >
-            <div className="px-6 py-8 space-y-4 flex flex-col">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
+      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Rendered in Portal */}
+      {createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: '100%' }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-0 z-[999] bg-surface/95 dark:bg-background/95 backdrop-blur-xl md:hidden flex flex-col justify-center"
+            >
+              {/* Close Button Positioned absolutely to match top bar */}
+              <div className="absolute top-6 right-6">
+                <button
+                  className="p-2 text-text-main dark:text-white bg-black/5 dark:bg-white/10 rounded-full"
                   onClick={() => setIsOpen(false)}
-                  className="text-lg font-medium text-text-muted hover:text-white transition-colors"
                 >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="px-8 space-y-6 flex flex-col items-center text-center">
+                {navLinks.map((link, index) => (
+                  <motion.a
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + index * 0.1 }}
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="text-3xl font-heading font-bold text-text-main dark:text-white hover:text-primary transition-colors"
+                  >
+                    {link.name}
+                  </motion.a>
+                ))}
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="flex items-center gap-4 mt-8"
+                >
+                  {/* Mobile Language Toggle inside menu if needed, or keep in top bar. 
+                       Keeping distinct toggles here for ease of access if top bar is obscured or for consistency 
+                    */}
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </nav>
   );
 };

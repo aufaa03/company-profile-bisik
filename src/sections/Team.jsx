@@ -21,7 +21,7 @@ const Team = () => {
           </p>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex flex-wrap justify-center gap-8">
           {team.map((member, index) => (
             <motion.div
               key={index}
@@ -33,9 +33,9 @@ const Team = () => {
               <div className="aspect-[4/5] overflow-hidden bg-gray-800 relative">
                 {/* Use imported image if name matches, otherwise placeholder */}
                 {member.name.includes('Hanif') ? (
-                  <img 
-                    src={pakHanifImg} 
-                    alt={member.name} 
+                  <img
+                    src={pakHanifImg}
+                    alt={member.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 ) : (
@@ -43,15 +43,15 @@ const Team = () => {
                     <User size={64} />
                   </div>
                 )}
-                
+
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80" />
-                
+
                 <div className="absolute bottom-0 left-0 right-0 p-8">
                   <h3 className="text-2xl font-bold text-white mb-1">{member.name}</h3>
                   <p className="text-primary font-medium mb-4">{member.position[language]}</p>
-                  
+
                   {member.linkedin && (
-                    <a 
+                    <a
                       href={member.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"

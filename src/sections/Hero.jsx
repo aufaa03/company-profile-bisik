@@ -33,7 +33,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-5xl md:text-7xl font-heading font-bold text-text-main dark:text-white leading-tight mb-6 tracking-tight"
+          className="text-4xl md:text-7xl font-heading font-bold text-text-main dark:text-white leading-tight mb-6 tracking-tight"
         >
           {ui.common.digitalSolutions[language]} <span className="text-gradient">{ui.common.innovative[language]}</span> <br />
           {ui.common.forBusiness[language]}
@@ -58,11 +58,10 @@ const Hero = () => {
             <a
               key={index}
               href={btn.link}
-              className={`px-8 py-4 rounded-full font-medium text-base transition-all flex items-center ${
-                index === 0
+              className={`px-8 py-4 rounded-full font-medium text-base transition-all flex items-center ${index === 0
                   ? 'bg-text-main dark:bg-white text-background hover:opacity-90 shadow-lg shadow-black/10 dark:shadow-white/10'
                   : 'bg-surface border border-black/10 dark:border-white/10 text-text-main dark:text-white hover:bg-surfaceHighlight'
-              }`}
+                }`}
             >
               {btn.text[language]}
               {index === 0 && <ArrowRight size={18} className="ml-2" />}
@@ -70,9 +69,9 @@ const Hero = () => {
           ))}
         </motion.div>
       </div>
-      
+
       {/* Scroll Indicator */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
